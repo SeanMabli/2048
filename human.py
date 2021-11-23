@@ -9,10 +9,11 @@ PreviousBoard = np.zeros((4, 4), dtype=int)
 def NewRandom(Num):
   global Board
   for _ in range(Num):
-    Random = np.random.randint(0, 4, 2)
-    while Board[Random[0], Random[1]] != 0:
+    if 0 in Board:
       Random = np.random.randint(0, 4, 2)
-    Board[Random[0], Random[1]] = np.random.choice([2, 4], p=[0.9, 0.1])
+      while Board[Random[0], Random[1]] != 0:
+        Random = np.random.randint(0, 4, 2)
+      Board[Random[0], Random[1]] = np.random.choice([2, 4], p=[0.9, 0.1])
 
 NewRandom(2)
 
@@ -43,8 +44,8 @@ while not np.array_equal(PreviousBoard, Board):
     
     # User Input
     if event.type == pygame.KEYDOWN:
-      PreviousBoard = Board
       if (event.key == pygame.K_UP):
+        PreviousBoard = Board.copy()
         for _ in range(3):
           for i in reversed(range(3)):
             for j in range(4):
@@ -57,6 +58,7 @@ while not np.array_equal(PreviousBoard, Board):
         NewRandom(1)
 
       if (event.key == pygame.K_RIGHT):
+        PreviousBoard = Board.copy()
         for _ in range(3):
           for i in range(4):
             for j in range(1, 4):
@@ -69,6 +71,7 @@ while not np.array_equal(PreviousBoard, Board):
         NewRandom(1)
 
       if (event.key == pygame.K_DOWN):
+        PreviousBoard = Board.copy()
         for _ in range(3):
           for i in range(1, 4):
             for j in range(4):
@@ -79,7 +82,9 @@ while not np.array_equal(PreviousBoard, Board):
                 Board[i, j] = Board[i - 1, j]
                 Board[i - 1, j] = 0
         NewRandom(1)
+
       if (event.key == pygame.K_LEFT):
+        PreviousBoard = Board.copy()
         for _ in range(3):
           for i in range(4):
             for j in reversed(range(3)):
